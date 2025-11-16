@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    container_name: analytics-app
+    env_file:
+      - .env
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+      - redis
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:4.4
+    container_name: analytics-mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:7.2
+    container_name: analytics-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo-data:
